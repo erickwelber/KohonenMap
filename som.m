@@ -92,6 +92,8 @@ hold off
 title('t=0');
 drawnow
 
+%%
+t_inicial = cputime;
 %% start traning
 while (t<=T)
     
@@ -312,127 +314,131 @@ while (t<=T)
 %       MC_temp = MC;
       
     %% plot em intervalo de iterações
-    if(t==5)
-        figure(3)
-        subplot(3,3,1)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==10)
-        figure(3)
-        subplot(3,3,2)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==20)
-        figure(3)
-        subplot(3,3,3)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==50)
-        figure(3)
-        subplot(3,3,4)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==100)
-        figure(3)
-        subplot(3,3,5)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==150)
-        figure(3)
-        subplot(3,3,6)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==200)
-        figure(3)
-        subplot(3,3,7)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==250)
-        figure(3)
-        subplot(3,3,8)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
-    if(t==300)
-        figure(3)
-        subplot(3,3,9)
-        plot(x1,x2,'ob')
-        hold on
-        plot(w1,w2,'r','linewidth',2)
-        plot(w1',w2','r','linewidth',2)
-        plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-        hold off
-        title(['t=' num2str(t)]);
-        drawnow
-    end
+%     if(t==5)
+%         figure(3)
+%         subplot(3,3,1)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==10)
+%         figure(3)
+%         subplot(3,3,2)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==20)
+%         figure(3)
+%         subplot(3,3,3)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==50)
+%         figure(3)
+%         subplot(3,3,4)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==100)
+%         figure(3)
+%         subplot(3,3,5)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==150)
+%         figure(3)
+%         subplot(3,3,6)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==200)
+%         figure(3)
+%         subplot(3,3,7)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==250)
+%         figure(3)
+%         subplot(3,3,8)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
+%     if(t==300)
+%         figure(3)
+%         subplot(3,3,9)
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         drawnow
+%     end
     
-    figure(2)
-    plot(x1,x2,'ob')
-    hold on
-    plot(w1,w2,'r','linewidth',2)
-    plot(w1',w2','r','linewidth',2)
-    plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-    hold off
-    title(['t=' num2str(t)]);
-    drawnow
+%     figure(2)
+%     plot(x1,x2,'ob')
+%     hold on
+%     plot(w1,w2,'r','linewidth',2)
+%     plot(w1',w2','r','linewidth',2)
+%     plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%     hold off
+%     title(['t=' num2str(t)]);
+%     drawnow
     t=t+1;
 end
 
+%%
+t_final = cputime;
+
+total = t_final - t_inicial;
 %% visualização da Matriz de Distâncias no plot
 plotMD(MD, 'annotation')
 
