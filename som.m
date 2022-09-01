@@ -75,6 +75,9 @@ MD = zeros(N,N);
 %% Matriz de Coordenadas
 MC = cell(10);
 
+%% Matriz de Trajetórias
+MT = cell(10);
+
 %% Visualização inicial [instante t=0]
 % initial figures
 figure(1)
@@ -123,6 +126,13 @@ while (t<=T)
         % coordenada do neurônio vencedor antes da atualização [vencedor]
         cwn1 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 1 [cwn1]
         
+        % Acumulação das coordenadas
+        if(isempty(MT{j1_c,j2_c}))
+            MT{j1_c,j2_c} = {cwn1};
+        else
+            MT{j1_c,j2_c}{end+1} = (cwn1);
+        end
+
         % update the winning neuron
         e_factor = exp(-((j1_c-j1_c).^2+(j2_c-j1_c).^2)/2*sigma);
         w1(j1_c,j2_c)=w1(j1_c,j2_c) + alpha * (x1(i) - w1(j1_c,j2_c));
@@ -130,6 +140,13 @@ while (t<=T)
         
         % coordenada do neurônio vencedor depois da atualização [vencedor]
         cwn2 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 2 [cwn2]
+        
+        % Acumulação das coordenadas
+        if(isempty(MT{j1_c,j2_c}))
+            MT{j1_c,j2_c} = {cwn2};
+        else
+            MT{j1_c,j2_c}{end+1} = (cwn2);
+        end
         
         % atualiza a coordenada do neurônio [vencedor]
         MC(j1_c,j2_c) = {(cwn2)}; % Matriz de Coordenadas [MC]
@@ -145,12 +162,26 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn1};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn1);
+                end
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
                 w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
                 w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
+                
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn2};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn2);
+                end
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
@@ -164,12 +195,26 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn1};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn1);
+                end
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
                 w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
                 w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
+                
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn2};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn2);
+                end
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
@@ -183,12 +228,26 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn1};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn1);
+                end
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
                 w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
                 w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
+                
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn2};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn2);
+                end
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
@@ -202,12 +261,26 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn1};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn1);
+                end
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
                 w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
                 w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
+                
+                % Acumulação das coordenadas
+                if(isempty(MT{jj1,jj2}))
+                    MT{jj1,jj2} = {cnn2};
+                else
+                    MT{jj1,jj2}{end+1} = (cnn2);
+                end
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
