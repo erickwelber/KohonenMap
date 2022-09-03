@@ -53,10 +53,6 @@ t=1;
 for i=1:number_of_inputs
     x1(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
     x2(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
-%     figure(9)
-%     plot(x1,x2,'ob')
-%     title('Dados de entrada');
-%     axis([-1 1 -1 1]);
 end
 
 %% populando os vetores de pesos
@@ -65,7 +61,6 @@ for j1=1:N
     for j2=1:N
         w1(j1,j2)=rand*(upper_bound_m-lower_bound_m)+lower_bound_m;
         w2(j1,j2)=rand*(upper_bound_m-lower_bound_m)+lower_bound_m;
-        MC_temp(j1,j2) = {[w1(j1,j2),w2(j1,j2)]};
     end
 end
 
@@ -92,10 +87,8 @@ hold off
 title('t=0');
 drawnow
 
-%%
-t_inicial = cputime;
 %% start traning
-while (t<=T)
+while (t<T)
     
     % update parameters
     alpha=alpha_initial*(1-t/T);
@@ -422,31 +415,21 @@ while (t<=T)
 %         title(['t=' num2str(t)]);
 %         drawnow
 %     end
-    
-%     figure(2)
-%     plot(x1,x2,'ob')
-%     hold on
-%     plot(w1,w2,'r','linewidth',2)
-%     plot(w1',w2','r','linewidth',2)
-%     plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%     hold off
-%     title(['t=' num2str(t)]);
-%     drawnow
+
     t=t+1;
 end
 
-%%
-t_final = cputime;
+%% visualização do mapa completo
+plotMAP(x1,x2,w1,w2,t);
 
-total = t_final - t_inicial;
 %% visualização da Matriz de Distâncias no plot
-plotMD(MD, 'annotation')
+plotMD(MD, 'annotation');
 
 %% visualização da Matriz de Coordenadas no plot
-plotMC(MC, MD, 'annotation')
+plotMC(MC, MD, 'annotation');
 
-%% visualização das Coordenadas SinÃ¡pticas no plot
-plotCS(MD, MC, w1, w2, 'annotation')
+%% visualização das Coordenadas Sinápticas no plot
+plotCS(MD, MC, w1, w2, 'annotation');
 
-%% visualização das trajetórias mánimas e míximas
-% plotTJ(MC_temp, MC, x1, x2, w1, w2, 'annotation');
+%% visualização das trajetórias mínimas e máximas
+plotTJ(MT, MD, 'annotation');
