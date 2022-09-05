@@ -3,8 +3,7 @@ function plotTJ(MT, MD, varargin)
 % configurações do plot
 if strcmp(varargin, 'annotation')
     set(gca, 'FontName', 'Helvetica', 'FontSize', 12)
-    xlim([-1 1]);
-    ylim([-1 1]);
+    axis([-1 1 -1 1])
 end
 
 %% Trajetória de todos os neurônios
@@ -35,9 +34,10 @@ valorMin = min(linhaMin);
 [LMin, CMin] = find(MD==valorMin);
 [Lmin,Cmin] = size(MT{LMin,CMin});
 figure(8)
+%title('Trajetória Mínima');
 for i=Lmin:Cmin
     if(i+1<=Cmin)
-        title(['Trajetória Mínima=' num2str(i)]);
+        title(['t=' num2str(i)]);
         plot(MT{LMin,CMin}{1,i}(1),MT{LMin,CMin}{1,i}(2),'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
         x = [MT{LMin,CMin}{1,i}(1),MT{LMin,CMin}{1,i+1}(1)];
         y = [MT{LMin,CMin}{1,i}(2),MT{LMin,CMin}{1,i+1}(2)];
@@ -50,26 +50,26 @@ for i=Lmin:Cmin
     hold on
 end
 
-%% Trajetória Máxima
-% Linha e Coluna da maior distância
-linhaMax = max(MD);
-valorMax = max(linhaMax);
-[LMax, CMax] = find(MD==valorMax);
-[Lmax,Cmax] = size(MT{LMax,CMax});
-figure(9)
-for i=Lmax:Cmax
-    if(i+1<=Cmax)
-        title(['Trajetória Mínima=' num2str(i)]);
-        plot(MT{LMax,CMax}{1,i}(1),MT{LMax,CMax}{1,i}(2),'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
-        x = [MT{LMax,CMax}{1,i}(1),MT{LMax,CMax}{1,i+1}(1)];
-        y = [MT{LMax,CMax}{1,i}(2),MT{LMax,CMax}{1,i+1}(2)];
-        line(x,y,'Color','red','LineWidth',2);
-        drawnow
-    else
-        plot(MT{LMax,CMax}{1,i}(1),MT{LMax,CMax}{1,i}(2),'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
-        drawnow
-    end
-    hold on
-end
+% %% Trajetória Máxima
+% % Linha e Coluna da maior distância
+% linhaMax = max(MD);
+% valorMax = max(linhaMax);
+% [LMax, CMax] = find(MD==valorMax);
+% [Lmax,Cmax] = size(MT{LMax,CMax});
+% figure(9)
+% title('Trajetória Máxima');
+% for i=Lmax:Cmax
+%     if(i+1<=Cmax)
+%         plot(MT{LMax,CMax}{1,i}(1),MT{LMax,CMax}{1,i}(2),'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
+%         x = [MT{LMax,CMax}{1,i}(1),MT{LMax,CMax}{1,i+1}(1)];
+%         y = [MT{LMax,CMax}{1,i}(2),MT{LMax,CMax}{1,i+1}(2)];
+%         line(x,y,'Color','red','LineWidth',2);
+%         drawnow
+%     else
+%         plot(MT{LMax,CMax}{1,i}(1),MT{LMax,CMax}{1,i}(2),'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
+%         drawnow
+%     end
+%     hold on
+% end
 
 end

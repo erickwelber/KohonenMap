@@ -1,27 +1,5 @@
 %% Script: som1.m
 %
-% Objetivo:
-%
-%   Executar a fase de treinamento do Algoritmo de Kohonen
-%   Exibir as distâncias percorridas pelos neurônios (Matriz de Distâncias)
-%   Exibir as coordenadas sinápticas correspondente à matriz de distância
-%   Exibir as trajetórias das coordenadas sinápticas (Menor e Maior)*
-%   Calc. a posição (DELTA) de cada neurônio (em cada iteração)*
-%       - calc. a velocidade de cada neurônio
-%       - visualização das "velocidades" (plot)
-%
-% Revisão:
-%
-%   Data            Autor           Descrição
-%   ====            =====           =========
-%   05/07/2022      Erick           Representação do Mapa em Intervalos de Iterações
-%   06/07/2022      Erick           Criação da Matriz de Distâncias (MD)
-%   09/07/2022      Erick           Criação da Matriz de Coordenadas (MC)
-%   12/07/2022      Erick           Visualização da Matriz de Distâncias
-%   12/07/2022      Erick           Visualização da Matriz Coordenadas sinápticas
-%   12/07/2022      Erick           Visualização das Coordenadas sinápticas
-%   17/07/2022      Erick           Matriz da trajetória Menor
-%
 % Referência
 % ammar al jodah (2022). self organizing map Kohonen Neural Network (https://www.mathworks.com/matlabcentral/fileexchange/46481-self-organizing-map-kohonen-neural-network), MATLAB Central File Exchange. Retrieved July 13, 2022.
 % Hristo Zhivomirov (2022). Matrix Visualization with Matlab (https://www.mathworks.com/matlabcentral/fileexchange/69594-matrix-visualization-with-matlab), MATLAB Central File Exchange. Retrieved July 13, 2022.
@@ -87,8 +65,11 @@ hold off
 title('t=0');
 drawnow
 
+%% Duração inicial
+t_inicial = cputime;
+
 %% start traning
-while (t<T)
+while (t<=T)
     
     % update parameters
     alpha=alpha_initial*(1-t/T);
@@ -121,10 +102,10 @@ while (t<T)
         % coordenada do neurônio vencedor antes da atualização [vencedor]
         cwn1 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 1 [cwn1]
         
-        % Acumulação das coordenadas
+        % Acumulação das coordenadas vencedoras antes da atualização
         if(isempty(MT{j1_c,j2_c}))
             MT{j1_c,j2_c} = {cwn1};
-        else
+        elseif(MT{j1_c,j2_c}{end} ~= cwn1)
             MT{j1_c,j2_c}{end+1} = (cwn1);
         end
 
@@ -136,10 +117,10 @@ while (t<T)
         % coordenada do neurônio vencedor depois da atualização [vencedor]
         cwn2 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 2 [cwn2]
         
-        % Acumulação das coordenadas
+        % Acumulação das coordenadas vencedoras depois da atualização
         if(isempty(MT{j1_c,j2_c}))
             MT{j1_c,j2_c} = {cwn2};
-        else
+        elseif(MT{j1_c,j2_c}{end} ~= cwn2)
             MT{j1_c,j2_c}{end+1} = (cwn2);
         end
         
@@ -157,10 +138,10 @@ while (t<T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn1)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
@@ -171,10 +152,10 @@ while (t<T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn2)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
@@ -190,10 +171,10 @@ while (t<T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn1)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
@@ -204,10 +185,10 @@ while (t<T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn2)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
@@ -223,10 +204,10 @@ while (t<T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn1)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
@@ -237,10 +218,10 @@ while (t<T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn2)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
@@ -256,10 +237,10 @@ while (t<T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn1)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
@@ -270,10 +251,10 @@ while (t<T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
-                % Acumulação das coordenadas
+                % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
-                else
+                elseif(MT{jj1,jj2}{end} ~= cnn2)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
@@ -285,26 +266,6 @@ while (t<T)
             end
         end
     end
-       
-%     if(t>0)
-%         figure(7);
-%         axis([-1 1 -1 1]);
-%         plot(MC_temp{1,1}(1),MC_temp{1,1}(2),'bo','LineWidth',2)
-%         line([MC_temp{1,1}(1) MC{1,1}(1) ], [ MC_temp{1,1}(2) MC{1,1}(2) ],'LineWidth',2);
-%         hold on
-%         plot(MC{1,1}(1),MC{1,1}(2),'bo','LineWidth',2)
-%     end
-%     MC_temp = MC;
-
-%       figure(8);
-%          if(t>1) 
-%              plot(MC{1,1}(1),MC{1,1}(2),'bo','LineWidth',2)
-%              line([MC_temp{1,1}(1) MC{1,1}(1) ], [ MC_temp{1,1}(2) MC{1,1}(2) ],'LineWidth',2);
-%              hold on;
-%              axis([-1 1 -1 1]);
-%          end  
-% 
-%       MC_temp = MC;
       
     %% plot em intervalo de iterações
 %     if(t==5)
@@ -418,6 +379,10 @@ while (t<T)
 
     t=t+1;
 end
+
+%%Duração final
+t_final = cputime;
+total = t_final - t_inicial
 
 %% visualização do mapa completo
 plotMAP(x1,x2,w1,w2,t);
