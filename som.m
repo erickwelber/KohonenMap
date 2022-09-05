@@ -397,4 +397,4 @@ plotMC(MC, MD, 'annotation');
 plotCS(MD, MC, w1, w2, 'annotation');
 
 %% visualização das trajetórias mínimas e máximas
-plotTJ(MT, MD, 'annotation');
+plotTJ(MT, MD, x1, x2, w1, w2, 'annotation');
