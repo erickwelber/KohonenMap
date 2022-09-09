@@ -46,7 +46,7 @@ if strcmp(varargin, 'annotation')
     title('Coordenadas Sinápticas')
 end
 
-figure(6)
+% figure(6)
 for m = 1:M
     for n = 1:N
         if((w1(m,n)==valorCW1Min) && (w2(m,n)==valorCW2Min))

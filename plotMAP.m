@@ -7,5 +7,5 @@ plot(w1,w2,'r','linewidth',2)
 plot(w1',w2','r','linewidth',2)
 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
 hold off
-title(['t=' num2str(t)]);
+title(['t=' num2str(t-1)]);
 end

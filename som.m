@@ -26,7 +26,32 @@ neighbour_radius_initial=N/2;
 T=300; % número de interações 300
 t=1;
 
-%% Populando os vetores de entrada
+%% Populando os vetores de entrada TRIANGLE
+% x = [-1 1]; % //triangle base
+% y = [-1 1]; % //triangle height
+% 
+% points = rand(number_of_inputs,2); %// sample uniformly in unit square
+% ind = points(:,2)>points(:,1); %// points to be unfolded 
+% points(ind,:) = [2-points(ind,2) points(ind,1)]; %// unfold them
+% points(:,1) = x(1) + (x(2)-x(1))/2*points(:,1); %// stretch x as needed
+% points(:,2) = y(1) + (y(2)-y(1))*points(:,2); %// stretch y as needed
+% x1 = points(:,1);
+% x2 = points(:,2);
+
+%% Populando os vetores de entrada CIRCLE
+% for n=1:number_of_inputs
+%     
+%     r(n) = sqrt(rand(1,1));
+%     % and theta as before:
+%     theta(n)=2*pi*rand(1,1);
+%    
+%     % convert to cartesian
+%     x1(n)=r(n)*cos(theta(n));
+%     x2(n)=r(n)*sin(theta(n));
+%     
+% end
+
+%% Populando os vetores de entrada SQUARE
 % initiate input and neural field
 for i=1:number_of_inputs
     x1(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
