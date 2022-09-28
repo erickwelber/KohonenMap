@@ -1,4 +1,4 @@
-function plotCS(MD, MC, w1, w2, varargin)
+function plotCS(MD, MC, w1, w2)
 
 % tamanho da matriz
 [M,N] = size(MD);
@@ -30,23 +30,12 @@ valorCW2Max = vetorMax(2); % valor da coordenada do maior valor de w2
 % configurações de visualização da matriz
 figure(6)
 hold on
+title('Coordenadas Sinápticas')
 plot(w1,w2,'r','linewidth',2)
 plot(w1',w2','r','linewidth',2)
 plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
 hold off
 
-% configurações do plot
-if strcmp(varargin, 'annotation')
-    % x-label, y-label, x-ticks, y-ticks, title
-    set(gca, 'FontName', 'Helvetica', 'FontSize', 12)
-    xlim([-1 1]);
-    ylim([-1 1]);
-%     xlabel('w1')
-%     ylabel('w2')
-    title('Coordenadas Sinápticas')
-end
-
-% figure(6)
 for m = 1:M
     for n = 1:N
         if((w1(m,n)==valorCW1Min) && (w2(m,n)==valorCW2Min))

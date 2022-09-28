@@ -40,7 +40,7 @@ for p = 1:P
     % annotation
     if strcmp(varargin, 'annotation')
         % x-label, y-label, x-ticks, y-ticks, title
-        set(gca, 'FontName', 'Helvetica', 'FontSize', 12)
+%         set(gca, 'FontName', 'Helvetica', 'FontSize', 12)
         xlabel('Número da Coluna')
         ylabel('Número da Linha')
         title('Matriz de Distâncias')

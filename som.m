@@ -26,7 +26,13 @@ neighbour_radius_initial=N/2;
 T=300; % número de interações 300
 t=1;
 
-%% Populando os vetores de entrada TRIANGLE
+%% Populando os vetores de entrada CÍRCULO VAZADO
+for n=1:number_of_inputs
+    x1(n) = cos(n);
+    x2(n) = sin(n);
+end
+
+%% Populando os vetores de entrada TRIÂNGULO PREENCHIDO
 % x = [-1 1]; % //triangle base
 % y = [-1 1]; % //triangle height
 % 
@@ -38,7 +44,7 @@ t=1;
 % x1 = points(:,1);
 % x2 = points(:,2);
 
-%% Populando os vetores de entrada CIRCLE
+%% Populando os vetores de entrada CÍRCULO PREENCHIDO
 % for n=1:number_of_inputs
 %     
 %     r(n) = sqrt(rand(1,1));
@@ -51,12 +57,12 @@ t=1;
 %     
 % end
 
-%% Populando os vetores de entrada SQUARE
-% initiate input and neural field
-for i=1:number_of_inputs
-    x1(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
-    x2(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
-end
+%% Populando os vetores de entrada RETÂNGULO PREENCHIDO
+%initiate input and neural field
+% for i=1:number_of_inputs
+%     x1(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
+%     x2(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
+% end
 
 %% populando os vetores de pesos
 % initiate weight neural
@@ -79,16 +85,15 @@ MT = cell(10);
 %% Visualização inicial [instante t=0]
 % initial figures
 figure(1)
+hold on
+title('t=0');
 % input points in the x1,x2 map
 plot(x1,x2,'ob')
-hold on
 % neural field points in the x1,x2 map
 plot(w1,w2,'r','linewidth',1)
 plot(w1',w2','r','linewidth',1)
 plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
 hold off
-title('t=0');
-drawnow
 
 %% Duração inicial
 t_inicial = cputime;
@@ -124,8 +129,22 @@ while (t<=T)
         j1_c= minj1;
         j2_c= minj2;
         
+        % Coordenadas de todos os neurônios INICIAIS
+%         for m=1:N
+%             for n=1:N
+%                 MN(m,n) = {[w1(m,n),w2(m,n)]};
+%             end
+%         end
+        
         % coordenada do neurônio vencedor antes da atualização [vencedor]
         cwn1 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 1 [cwn1]
+        
+        % Matriz de distância entre cada neurônio
+%         for mm=1:N
+%             for nn=1:N
+%                 MDEN{j1_c,j2_c} = 
+%             end
+%         end
         
         % Acumulação das coordenadas vencedoras antes da atualização
         if(isempty(MT{j1_c,j2_c}))
@@ -292,117 +311,116 @@ while (t<=T)
         end
     end
       
-    %% plot em intervalo de iterações
-%     if(t==5)
-%         figure(3)
-%         subplot(3,3,1)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==10)
-%         figure(3)
-%         subplot(3,3,2)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==20)
-%         figure(3)
-%         subplot(3,3,3)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==50)
-%         figure(3)
-%         subplot(3,3,4)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==100)
-%         figure(3)
-%         subplot(3,3,5)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==150)
-%         figure(3)
-%         subplot(3,3,6)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==200)
-%         figure(3)
-%         subplot(3,3,7)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==250)
-%         figure(3)
-%         subplot(3,3,8)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
-%     if(t==300)
-%         figure(3)
-%         subplot(3,3,9)
-%         plot(x1,x2,'ob')
-%         hold on
-%         plot(w1,w2,'r','linewidth',2)
-%         plot(w1',w2','r','linewidth',2)
-%         plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
-%         hold off
-%         title(['t=' num2str(t)]);
-%         drawnow
-%     end
+%% plot em intervalo de iterações
+if(t==1)
+    figure(3)
+    subplot(3,3,1)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
 
-    t=t+1;
+if(t==10)
+    figure(3)
+    subplot(3,3,2)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==20)
+    figure(3)
+    subplot(3,3,3)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==50)
+    figure(3)
+    subplot(3,3,4)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==100)
+    figure(3)
+    subplot(3,3,5)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==150)
+    figure(3)
+    subplot(3,3,6)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==200)
+    figure(3)
+    subplot(3,3,7)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==250)
+    figure(3)
+    subplot(3,3,8)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)])
+    hold off
+end
+
+if(t==300)
+    figure(3)
+    subplot(3,3,9)
+    plot(x1,x2,'ob')
+    hold on
+    plot(w1,w2,'r','linewidth',1)
+    plot(w1',w2','r','linewidth',1)
+    plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+    title(['t=' num2str(t)]);
+    hold off
+end
+
+t=t+1;
 end
 
 %%Duração final
@@ -410,16 +428,16 @@ t_final = cputime;
 total = t_final - t_inicial
 
 %% visualização do mapa completo
-plotMAP(x1,x2,w1,w2,t);
+% plotMAP(x1,x2,w1,w2,t);
 
 %% visualização da Matriz de Distâncias no plot
-plotMD(MD, 'annotation');
+% plotMD(MD, 'annotation');
 
 %% visualização da Matriz de Coordenadas no plot
-plotMC(MC, MD, 'annotation');
+% plotMC(MC, MD, 'annotation');
 
 %% visualização das Coordenadas Sinápticas no plot
-plotCS(MD, MC, w1, w2, 'annotation');
+% plotCS(MD, MC, w1, w2);
 
 %% visualização das trajetórias mínimas e máximas
-plotTJ(MT, MD, x1, x2, w1, w2, 'annotation');
+% plotTJ(MT, MD);
