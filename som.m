@@ -11,8 +11,8 @@ close all;
 
 %% Parâmetros iniciais
 % parmaters
-number_of_inputs=1000; % 1000
-N=5; % N^2 points 10
+number_of_inputs=100; % 1000
+N=4; % N^2 points 10
 
 upper_bound_x=1;
 lower_bound_x=-1;
@@ -82,11 +82,8 @@ MC = cell(N);
 %% Matriz de Trajetórias
 MT = cell(N);
 
-%% Matriz de Coordenadas dos Neurônios em Cada Atualização
-MN = cell(N);
-
-%% Matriz de Distâncias entre Neurônios
-MDEN = cell(N);
+%% Matriz de Distâncias entre Neurônios em Cada Atualização
+MDEN = cell(N^2-1,N^2-1);
 
 %% Visualização inicial [instante t=0]
 % initial figures
@@ -138,6 +135,17 @@ while (t<=T)
         % coordenada do neurônio vencedor antes da atualização [vencedor]
         cwn1 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 1 [cwn1]
         
+%         figure(2)
+%         %hold on
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+        
         % Acumulação das coordenadas vencedoras antes da atualização
         if(isempty(MT{j1_c,j2_c}))
             MT{j1_c,j2_c} = {cwn1};
@@ -153,6 +161,17 @@ while (t<=T)
         % coordenada do neurônio vencedor depois da atualização [vencedor]
         cwn2 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 2 [cwn2]
         
+%         figure(2)
+%         %hold on
+%         plot(x1,x2,'ob')
+%         hold on
+%         plot(w1,w2,'r','linewidth',2)
+%         plot(w1',w2','r','linewidth',2)
+%         plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%         hold off
+%         title(['t=' num2str(t)]);
+%         text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+        
         % Acumulação das coordenadas vencedoras depois da atualização
         if(isempty(MT{j1_c,j2_c}))
             MT{j1_c,j2_c} = {cwn2};
@@ -160,52 +179,33 @@ while (t<=T)
             MT{j1_c,j2_c}{end+1} = (cwn2);            
         end
         
-
         %---------------------------------------------------------
-        
-        % Matriz de Coordenadas dos Neurônios em Cada Atualização [mn]
-        if(isempty(MN{j1_c,j2_c}))
-            MN{j1_c,j2_c} = {cwn2};
-            % Matriz de distância entre cada neurônio [MDEN]
-            ii=0;
-            jj=0;
-            for ii=1:N
-                for jj=1:N
-                    if([w1(ii,jj),w2(ii,jj)] ~= cwn2)
-                        if(isempty(MDEN{j1_c,j2_c}))
-                            MDEN{j1_c,j2_c} = {norm(cwn2-[w1(ii,jj),w2(ii,jj)])};
-                        else
-                            MDEN{j1_c,j2_c}{end+1} = norm(cwn2-[w1(ii,jj),w2(ii,jj)]);
+        % Matriz de Coordenadas entre neurônios depois da atualização
+        [m,n] = size(w1);
+        linha = 0;
+        for i=1:m
+            for j=1:n
+                linha = linha + 1;
+                array{linha} = [w1(i,j),w2(i,j)];
+            end
+        end
+        [lin,col] = size(array);
+        for i=1:col
+            if(i<col)
+                n_indice = array{i};
+                for j=i+1:col
+                    n_atual = array{j};
+                    if(n_indice ~= n_atual)
+                        if(isempty(MDEN{i,j-i}))
+                            MDEN{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                        elseif([MDEN{i,j-i}{end}(1),MDEN{i,j-i}{end}(2)] ~= [n_indice] | [MDEN{i,j-i}{end}(3),MDEN{i,j-i}{end}(4)] ~= [n_atual])
+                            MDEN{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
                         end
                     end
                 end
             end
-        % Matriz de Coordenadas dos Neurônios em Cada Atualização [MN]
-        elseif(MN{j1_c,j2_c}{end} ~= cwn2)
-            MN{j1_c,j2_c}{end+1} = (cwn2);
-            % Matriz de distância entre cada neurônio [MDEN]
-            [linha,coluna] = size(MDEN{j1_c,j2_c});
-            lin = linha + 1;
-            col = 1;
-            ii=0;
-            jj=0;
-            for ii=1:N
-                for jj=1:N
-                    if([w1(ii,jj),w2(ii,jj)] ~= cwn2)
-                        if(isempty(MDEN{j1_c,j2_c}))
-                            MDEN{j1_c,j2_c} = {norm(cwn2-[w1(ii,jj),w2(ii,jj)])};
-                        else
-                            MDEN{j1_c,j2_c}{lin,col} = norm(cwn2-[w1(ii,jj),w2(ii,jj)]);
-                            col = col + 1;
-                        end
-                    end
-                end
-            end  
         end
-        
-        
-        %--------------------------------------------------------
-        
+        %---------------------------------------------------------      
         
         % atualiza a coordenada do neurônio [vencedor]
         MC(j1_c,j2_c) = {(cwn2)}; % Matriz de Coordenadas [MC]
@@ -221,6 +221,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N2]'))
+                
                 % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
@@ -235,6 +247,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N2]'))
+                
                 % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
@@ -242,7 +266,33 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
-                %--CÓDIGO AQUI--
+                %---------------------------------------------------------
+                % Matriz de Coordenadas entre neurônios depois da atualização
+                [m,n] = size(w1);
+                linha = 0;
+                for i=1:m
+                    for j=1:n
+                        linha = linha + 1;
+                        array{linha} = [w1(i,j),w2(i,j)];
+                    end
+                end
+                [lin,col] = size(array);
+                for i=1:col
+                    if(i<col)
+                        n_indice = array{i};
+                        for j=i+1:col
+                            n_atual = array{j};
+                            if(n_indice ~= n_atual)
+                                if(isempty(MDEN{i,j-i}))
+                                    MDEN{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                                elseif([MDEN{i,j-i}{end}(1),MDEN{i,j-i}{end}(2)] ~= [n_indice] | [MDEN{i,j-i}{end}(3),MDEN{i,j-i}{end}(4)] ~= [n_atual])
+                                    MDEN{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
+                                end
+                            end
+                        end
+                    end
+                end
+                %---------------------------------------------------------
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
@@ -256,6 +306,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N3]'))
+                
                 % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
@@ -270,6 +332,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N3]'))
+                
                 % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
@@ -277,9 +351,34 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
-                %--CÓDIGO AQUI--
+                %---------------------------------------------------------
+                % Matriz de Coordenadas entre neurônios depois da atualização
+                [m,n] = size(w1);
+                linha = 0;
+                for i=1:m
+                    for j=1:n
+                        linha = linha + 1;
+                        array{linha} = [w1(i,j),w2(i,j)];
+                    end
+                end
+                [lin,col] = size(array);
+                for i=1:col
+                    if(i<col)
+                        n_indice = array{i};
+                        for j=i+1:col
+                            n_atual = array{j};
+                            if(n_indice ~= n_atual)
+                                if(isempty(MDEN{i,j-i}))
+                                    MDEN{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                                elseif([MDEN{i,j-i}{end}(1),MDEN{i,j-i}{end}(2)] ~= [n_indice] | [MDEN{i,j-i}{end}(3),MDEN{i,j-i}{end}(4)] ~= [n_atual])
+                                    MDEN{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
+                                end
+                            end
+                        end
+                    end
+                end
+                %---------------------------------------------------------
 
-                
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
                 
@@ -292,6 +391,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N4]'))
+                
                 % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
@@ -306,6 +417,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N4]'))
+                
                 % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
@@ -313,7 +436,33 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
-                %--CÓDIGO AQUI--
+                %---------------------------------------------------------
+                % Matriz de Coordenadas entre neurônios depois da atualização
+                [m,n] = size(w1);
+                linha = 0;
+                for i=1:m
+                    for j=1:n
+                        linha = linha + 1;
+                        array{linha} = [w1(i,j),w2(i,j)];
+                    end
+                end
+                [lin,col] = size(array);
+                for i=1:col
+                    if(i<col)
+                        n_indice = array{i};
+                        for j=i+1:col
+                            n_atual = array{j};
+                            if(n_indice ~= n_atual)
+                                if(isempty(MDEN{i,j-i}))
+                                    MDEN{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                                elseif([MDEN{i,j-i}{end}(1),MDEN{i,j-i}{end}(2)] ~= [n_indice] | [MDEN{i,j-i}{end}(3),MDEN{i,j-i}{end}(4)] ~= [n_atual])
+                                    MDEN{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
+                                end
+                            end
+                        end
+                    end
+                end
+                %---------------------------------------------------------
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
@@ -327,6 +476,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho antes da atualização
                 cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
                 
+%                 figure(2)
+%                 %hold on                
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N5]'))
+                
                 % Acumulação das coordenadas vizinhas antes da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn1};
@@ -341,6 +502,18 @@ while (t<=T)
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
                 
+%                 figure(2)
+%                 %hold on
+%                 plot(x1,x2,'ob')
+%                 hold on
+%                 plot(w1,w2,'r','linewidth',2)
+%                 plot(w1',w2','r','linewidth',2)
+%                 plot(w1,w2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y')
+%                 hold off
+%                 title(['t=' num2str(t)]);
+%                 text(w1(j1_c,j2_c),w2(j1_c,j2_c),strcat('(',num2str(w1(j1_c,j2_c),3),',',num2str(w2(j1_c,j2_c),3),')[N1]'))
+%                 text(w1(jj1,jj2),w2(jj1,jj2),strcat('(',num2str(w1(jj1,jj2),3),',',num2str(w2(jj1,jj2),3),')[N5]'))
+                
                 % Acumulação das coordenadas vizinhas depois da atualização
                 if(isempty(MT{jj1,jj2}))
                     MT{jj1,jj2} = {cnn2};
@@ -348,7 +521,33 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn2);
                 end
                 
-                %--CÓDIGO AQUI--
+                %---------------------------------------------------------
+                % Matriz de Coordenadas entre neurônios depois da atualização
+                [m,n] = size(w1);
+                linha = 0;
+                for i=1:m
+                    for j=1:n
+                        linha = linha + 1;
+                        array{linha} = [w1(i,j),w2(i,j)];
+                    end
+                end
+                [lin,col] = size(array);
+                for i=1:col
+                    if(i<col)
+                        n_indice = array{i};
+                        for j=i+1:col
+                            n_atual = array{j};
+                            if(n_indice ~= n_atual)
+                                if(isempty(MDEN{i,j-i}))
+                                    MDEN{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                                elseif([MDEN{i,j-i}{end}(1),MDEN{i,j-i}{end}(2)] ~= [n_indice] | [MDEN{i,j-i}{end}(3),MDEN{i,j-i}{end}(4)] ~= [n_atual])
+                                    MDEN{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
+                                end
+                            end
+                        end
+                    end
+                end
+                %--------------------------------------------------------
                 
                 % atualiza a coordenada do neurônio [vizinha]
                 MC(jj1,jj2) = {(cnn2)}; % Matriz de Coordenadas [MC]
@@ -356,10 +555,10 @@ while (t<=T)
                 % incrementa e atualiza a distância entre os neurônios [vizinho]
                 MD(jj1,jj2) = MD(jj1,jj2) + norm(cnn1-cnn2); % Matriz de Distâncias [MD]
             end
-        end
+        end       
     end
       
-%% plot em intervalo de iterações
+% plot em intervalo de iterações
 % if(t==1)
 %     figure(3)
 %     subplot(3,3,1)
@@ -476,16 +675,19 @@ t_final = cputime;
 total = t_final - t_inicial
 
 %% visualização do mapa completo
-% plotMAP(x1,x2,w1,w2,t);
+plotMAP(x1,x2,w1,w2,t);
 
 %% visualização da Matriz de Distâncias no plot
-% plotMD(MD, 'annotation');
+plotMD(MD, 'annotation');
 
 %% visualização da Matriz de Coordenadas no plot
-% plotMC(MC, MD, 'annotation');
+plotMC(MC, MD, 'annotation');
 
 %% visualização das Coordenadas Sinápticas no plot
-% plotCS(MD, MC, w1, w2);
+plotCS(MD, MC, w1, w2);
 
 %% visualização das trajetórias mínimas e máximas
-% plotTJ(MT, MD);
+plotTJ(MT, MD);
+
+%% visualização dos neurônios 1 e 2
+plotMDEN(MDEN);

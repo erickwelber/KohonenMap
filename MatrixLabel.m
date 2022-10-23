@@ -1,43 +1,74 @@
-% x = (1:5)';
-% y = rand(5,1);
-% bar(x,y)
-% %# show X and Y coordinates
-% text(x,y,strcat('(',num2str(x),',',num2str(y,2),')'),'horiz','center','vert','bottom')
-
-%%
 clc;
 clear all;
 close all;
 
-% %%
-% w1 = rand(10);
-% w2 = rand(10);
-% 
-% %%
-% figure(1)
-% plot(w1,w2,'r','linewidth',2)
-% hold on
-% plot(w1',w2','r','linewidth',2)
-% hold on
-% for m = 1:10
-%     for n = 1:10
-%         figure(1)
-%         hold on
-%         plot(w1(m,n),w2(m,n),'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
-%         text(w1(m,n),w2(m,n),strcat('(',num2str(w1(m,n),2),',',num2str(w2(m,n),2),')'),'horiz','center','vert','bottom');
-%     end
-% end
+N=2;
 
-number_of_inputs = 1000;
+MATRIZ = cell(N^2-1,N^2-1);
 
+w1=[0.0537,0.1190;0.0028,0.0176];
+w2=[-0.0665,0.1720;0.0768,-0.0690];
 
-
-for n=1:number_of_inputs
-    x1(n) = sin(n);
-    x2(n) = cos(n);
+[m,n] = size(w1);
+linha=0;
+for i=1:m
+    for j=1:n
+        linha = linha + 1;
+        array{linha} = [w1(i,j),w2(i,j)];
+    end
 end
 
-% t = linspace(0,2*pi);
+%subarray = array(2:end);
 
-plot(x1,x2,'ob')
-% axis([-1 1 -1 1]);        
+%[m,n] = size(MATRIZ);
+
+[lin,col] = size(array);
+
+for i=1:col
+    if(i<col)
+        n_indice = array{i}
+        for j=i+1:col
+            n_atual = array{j}
+            if(n_indice ~= n_atual)
+                if(isempty(MATRIZ{i,j-i}))
+                    MATRIZ{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                    
+                elseif([MATRIZ{i,j-i}{end}(1),MATRIZ{i,j-i}{end}(2)] ~= [n_indice] | [MATRIZ{i,j-i}{end}(3),MATRIZ{i,j-i}{end}(4)] ~= [n_atual])
+                    MATRIZ{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
+                end
+                
+            end
+        end
+    end
+end
+
+w1=[0.0537,0.1190;0.0028,0.1220];
+w2=[-0.0665,0.1720;0.0768,0.1719];
+
+[m,n] = size(w1);
+linha=0;
+for i=1:m
+    for j=1:n
+        linha = linha + 1;
+        array{linha} = [w1(i,j),w2(i,j)];
+    end
+end
+
+for i=1:col
+    if(i<col)
+        n_indice = array{i}
+        for j=i+1:col
+            n_atual = array{j}
+            if(n_indice ~= n_atual)
+                if(isempty(MATRIZ{i,j-i}))
+                    MATRIZ{i,j-i} = {[n_indice,n_atual norm(n_indice-n_atual)]};
+                    
+                elseif([MATRIZ{i,j-i}{end}(1),MATRIZ{i,j-i}{end}(2)] ~= [n_indice] | [MATRIZ{i,j-i}{end}(3),MATRIZ{i,j-i}{end}(4)] ~= [n_atual])
+                    MATRIZ{i,j-i}{end+1} = [[n_indice,n_atual],norm(n_indice-n_atual)];
+                end
+                
+            end
+        end
+    end
+end
+    

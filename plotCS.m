@@ -31,8 +31,8 @@ valorCW2Max = vetorMax(2); % valor da coordenada do maior valor de w2
 figure(6)
 hold on
 title('Coordenadas Sinápticas')
-plot(w1,w2,'r','linewidth',2)
-plot(w1',w2','r','linewidth',2)
+plot(w1,w2,'r','linewidth',1)
+plot(w1',w2','r','linewidth',1)
 plot(w1,w2,'yo','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','y');
 hold off
 
