@@ -11,8 +11,8 @@ close all;
 
 %% Parâmetros iniciais
 % parmaters
-number_of_inputs=100; % 1000
-N=4; % N^2 points 10
+number_of_inputs=20; % 1000
+N=2; % N^2 points 10
 
 upper_bound_x=1;
 lower_bound_x=-1;
@@ -27,10 +27,10 @@ T=300; % número de interações 300
 t=1;
 
 %% Populando os vetores de entrada CÍRCULO VAZADO
-for n=1:number_of_inputs
-    x1(n) = cos(n);
-    x2(n) = sin(n);
-end
+% for n=1:number_of_inputs
+%     x1(n) = cos(n);
+%     x2(n) = sin(n);
+% end
 
 %% Populando os vetores de entrada TRIÂNGULO PREENCHIDO
 % x = [-1 1]; % //triangle base
@@ -59,10 +59,10 @@ end
 
 %% Populando os vetores de entrada RETÂNGULO PREENCHIDO
 %initiate input and neural field
-% for i=1:number_of_inputs
-%     x1(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
-%     x2(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
-% end
+for i=1:number_of_inputs
+    x1(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
+    x2(i)=rand*(upper_bound_x-lower_bound_x)+lower_bound_x;
+end
 
 %% populando os vetores de pesos
 % initiate weight neural
@@ -152,11 +152,15 @@ while (t<=T)
         elseif(MT{j1_c,j2_c}{end} ~= cwn1)
             MT{j1_c,j2_c}{end+1} = (cwn1);
         end
+        
+        % parameters signal Gaussian winner
+        [signal_winner] = gaussianW(w1,w2,j1_c,j2_c,max_neighbour_radius,N);
+        signalWinner = signal_winner;
 
         % update the winning neuron
         e_factor = exp(-((j1_c-j1_c).^2+(j2_c-j1_c).^2)/2*sigma);
-        w1(j1_c,j2_c)=w1(j1_c,j2_c) + alpha * (x1(i) - w1(j1_c,j2_c));
-        w2(j1_c,j2_c)=w2(j1_c,j2_c) + alpha * (x2(i) - w2(j1_c,j2_c));
+        w1(j1_c,j2_c)=w1(j1_c,j2_c) + alpha * (x1(i) - w1(j1_c,j2_c)) + signalWinner;
+        w2(j1_c,j2_c)=w2(j1_c,j2_c) + alpha * (x2(i) - w2(j1_c,j2_c)) + signalWinner;
         
         % coordenada do neurônio vencedor depois da atualização [vencedor]
         cwn2 = [w1(j1_c,j2_c),w2(j1_c,j2_c)]; % coordinate winner neuron 2 [cwn2]
@@ -240,9 +244,13 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
+                % parameters signal Gaussian neighbour
+                [signal_winner_neighbour] = gaussianN(w1,w2,jj1,jj2);
+                signalWinnerNeighbour = signal_winner_neighbour;
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
-                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
-                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
+                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
+                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
@@ -325,9 +333,13 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
+                % parameters signal Gaussian neighbour
+                [signal_winner_neighbour] = gaussianN(w1,w2,jj1,jj2);
+                signalWinnerNeighbour = signal_winner_neighbour;
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
-                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
-                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
+                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
+                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
@@ -410,9 +422,13 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
+                % parameters signal Gaussian neighbour
+                [signal_winner_neighbour] = gaussianN(w1,w2,jj1,jj2);
+                signalWinnerNeighbour = signal_winner_neighbour;
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
-                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
-                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
+                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
+                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
@@ -495,9 +511,13 @@ while (t<=T)
                     MT{jj1,jj2}{end+1} = (cnn1);
                 end
                 
+                % parameters signal Gaussian neighbour
+                [signal_winner_neighbour] = gaussianN(w1,w2,jj1,jj2);
+                signalWinnerNeighbour = signal_winner_neighbour;
+                
                 e_factor = exp(-((j1_c-jj1).^2+(j2_c-jj2).^2)/2*sigma);
-                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2));
-                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2));
+                w1(jj1,jj2)=w1(jj1,jj2) + alpha * e_factor * (x1(i)-w1(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
+                w2(jj1,jj2)=w2(jj1,jj2) + alpha * e_factor * (x2(i)-w2(jj1,jj2)) + signalWinner + signalWinnerNeighbour;
                 
                 % coordenada do neurônio vizinho depois da atualização
                 cnn2 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 2 [cnn2]
