@@ -1,8 +1,8 @@
-function [signal_winner_neighbour] = gaussianN(w1,w2,jj1,jj2)
+function [signal_neighbour] = gaussianN(w1,w2,jj1,jj2)
 
 % definições preliminares
-x = linspace(-1,1);
-y = linspace(-1,1);
+x = linspace(-1,1,100);
+y = linspace(-1,1,100);
 [X,Y] = meshgrid(x,y);
 
 % x=reshape(w1,[1,numel(w1)]);
@@ -25,7 +25,7 @@ fy = Amp * exp(-(Y-uy).^2/(2*sig^2));
 
 gauss2d = fx.*fy;
 
-signal_winner_neighbour = max(max(gauss2d(:)));
+signal_neighbour = max(max(gauss2d(:)));
 
 % figure(30), clf
 % surf(x,y,gauss2d);

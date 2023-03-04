@@ -11,7 +11,7 @@ linhaMax = max(MD);
 valorMax = max(linhaMax); % valor máximo da Matriz de Distâncias
 
 % configurações de visualização da matriz
-figure(5);
+figure(13);
 himg = imagesc(MD(:,:));
 colormap autumn
 % colorbar

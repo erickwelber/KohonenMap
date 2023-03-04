@@ -2,7 +2,7 @@ function plotMDEN(MDEN)
 
 % Plot de sinal do neurônio 1 com o neurônio 2 ao longo de 300 iterações
 % [m,n] = size(MDEN{1,1});
-% figure(10)
+% figure(17)
 % hold on
 % title('Visualização dos Neurônios 1 e 2')
 % for i=m:n
@@ -38,27 +38,35 @@ function plotMDEN(MDEN)
 % legend('Neurônio 1','','Neurônio 2','')
 
 % Plot de distâncias entre os neurônios
-figure(11)
-hold on
-title('Distâncias Sinápticas')
+% figure(18)
+% hold on
+% title('Distâncias Sinápticas')
 [M,N] = size(MDEN);
 legendInfo = {};
+fig=100;
+% aux = 0;
 for i=1:M
     aux = 0;
     for j=1:N
         if(~isempty(MDEN{i,j}))
+            figure(fig)
+            hold on
+            title('Eficiência Sináptica')
             data = [];
             TAM = length(MDEN{i,j});
             for ii=1:TAM
                 data(ii) = MDEN{i,j}{1,ii}(5);
-            end
+            end 
             plot(300/length(data).*(1:1:length(data)),data)
             grid on
             aux = aux + 1;
-            legendInfo{end+1} = ['Entre ' num2str(i) ' e ' num2str(i+aux)];
+            legendInfo{j} = ['Entre ' num2str(i) ' e ' num2str(i+aux)];
         end
     end
+    legend(legendInfo,'Location','northeast','NumColumns',2)
+    fig=fig+1;
+    legendInfo = {};
 end
 hold off
-legend(legendInfo,'Location','northwest','NumColumns',2)
+% legend(legendInfo,'Location','northwest','NumColumns',2)
 end

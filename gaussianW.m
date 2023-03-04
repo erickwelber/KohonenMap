@@ -1,4 +1,4 @@
-function [signal_winner] = gaussianW(w1,w2,j1_c,j2_c,max_neighbour_radius,N)
+function [signal_winner, value_neighbour] = gaussianW(w1,w2,j1_c,j2_c,max_neighbour_radius,N)
 
 % definições preliminares
 x = linspace(-1,1,100);
@@ -17,7 +17,7 @@ y = linspace(-1,1,100);
 ux = w1(j1_c,j2_c);
 uy = w2(j1_c,j2_c);
 sig = 0.5;
-Amp = (1/(sqrt(2*pi*sig^2)));
+Amp = 10*(1/(sqrt(2*pi*sig^2)));
 
 % Gaussian
 fx = Amp * exp(-(X-ux).^2/(2*sig^2));
@@ -33,7 +33,7 @@ cy=Y(:,1)';
 % [~,indexcY] = min(abs(uy-cy));
 % signal_winner_2 = gauss2d(indexcY,indexcX)
 
-value_neighbour=0;
+value_neighbour = NaN(N);
 
 % -----
 for neighbour_radius=1:1:max_neighbour_radius
@@ -44,7 +44,8 @@ for neighbour_radius=1:1:max_neighbour_radius
         ny=w2(jj1,jj2);
         [~,indexX] = min(abs(nx-cx));      
         [~,indexY] = min(abs(ny-cy));
-        value_neighbour = value_neighbour + gauss2d(indexY,indexX);
+        value_neighbour(jj1,jj2) = gauss2d(indexY,indexX);
+%         value_neighbour = value_neighbour + gauss2d(indexY,indexX);
 %         % coordenada do neurônio vizinho antes da atualização
 %         cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
 %         
@@ -62,7 +63,8 @@ for neighbour_radius=1:1:max_neighbour_radius
         ny=w2(jj1,jj2);
         [~,indexX] = min(abs(nx-cx));      
         [~,indexY] = min(abs(ny-cy));
-        value_neighbour = value_neighbour + gauss2d(indexY,indexX);
+        value_neighbour(jj1,jj2) = gauss2d(indexY,indexX);
+%         value_neighbour = value_neighbour + gauss2d(indexY,indexX);
 %         % coordenada do neurônio vizinho antes da atualização
 %         cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
 %         
@@ -80,7 +82,8 @@ for neighbour_radius=1:1:max_neighbour_radius
         ny=w2(jj1,jj2);
         [~,indexX] = min(abs(nx-cx));      
         [~,indexY] = min(abs(ny-cy));
-        value_neighbour = value_neighbour + gauss2d(indexY,indexX);
+        value_neighbour(jj1,jj2) = gauss2d(indexY,indexX);
+%         value_neighbour = value_neighbour + gauss2d(indexY,indexX);
 %         % coordenada do neurônio vizinho antes da atualização
 %         cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
 %         
@@ -98,7 +101,8 @@ for neighbour_radius=1:1:max_neighbour_radius
         ny=w2(jj1,jj2);
         [~,indexX] = min(abs(nx-cx));      
         [~,indexY] = min(abs(ny-cy));
-        value_neighbour = value_neighbour + gauss2d(indexY,indexX);
+        value_neighbour(jj1,jj2) = gauss2d(indexY,indexX);
+%         value_neighbour = value_neighbour + gauss2d(indexY,indexX);
 %         % coordenada do neurônio vizinho antes da atualização
 %         cnn1 = [w1(jj1,jj2),w2(jj1,jj2)]; % coordenate neighbour neuron 1 [cnn1]
 %         
@@ -112,7 +116,7 @@ for neighbour_radius=1:1:max_neighbour_radius
 end
 % -----
 
-signal_winner = max(max(gauss2d(:))) + value_neighbour;
+signal_winner = max(max(gauss2d(:)));
 
 % figure(20), clf
 % surf(x,y,gauss2d);

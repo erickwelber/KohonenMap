@@ -7,7 +7,7 @@ valorMin = min(linhaMin);
 [LMin, CMin] = find(MD==valorMin);
 [Lmin,Cmin] = size(MT{LMin,CMin});
 
-figure(8)
+figure(15)
 hold on
 title('Trajetória Mínima')
 for i=Lmin:Cmin
@@ -44,7 +44,7 @@ valorMax = max(linhaMax);
 [LMax, CMax] = find(MD==valorMax);
 [Lmax,Cmax] = size(MT{LMax,CMax});
 
-figure(9)
+figure(16)
 hold on
 title('Trajetória Máxima')
 for i=Lmax:Cmax

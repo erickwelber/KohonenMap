@@ -28,7 +28,7 @@ valorCW1Max = vetorMax(1); % valor da coordenada do maior valor de w1
 valorCW2Max = vetorMax(2); % valor da coordenada do maior valor de w2
 
 % configurações de visualização da matriz
-figure(6)
+figure(14)
 hold on
 title('Coordenadas Sinápticas')
 plot(w1,w2,'r','linewidth',1)

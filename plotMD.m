@@ -29,7 +29,7 @@ for p = 1:P
     if P > 1, subplot(1, P, p), end
     
     % visualize the matrix
-    figure(4)
+    figure(12)
     himg = imagesc(A(:, :, p));
     colormap autumn
     %     colormap winter;
